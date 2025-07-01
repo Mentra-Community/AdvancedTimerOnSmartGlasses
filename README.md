@@ -1,8 +1,14 @@
 # Advanced Timer App
 
-This app is an advanced timer utility that combines a timer, stopwatch, and Pomodoro functionality in one interface. <br>
-It supports both voice and app control, customizable durations, auto-lap features, and flexible on-screen information levels, <br>
-making it ideal for productivity, workouts, and focused work sessions.
+This app is an advanced timer utility that combines a timer, stopwatch, and Pomodoro functionality in one interface. It supports both voice and app control, customizable durations, auto-lap features, and flexible on-screen information levels, making it ideal for productivity, workouts, and focused work sessions.
+
+### Updated settings for better app control
+
+- Fully intergrate MentraOS. (based on Mentra-OS-Cloud-Example).
+- Better control for timer options, utilizing text field instead of select field.
+- Better control for stopwatch auto-interval options, utilizing text fields instead of select fields..
+- Better control for display options, choose how much information you wish to display.
+- Control-Input Voice/App selection will also enable/disable microphone.
 
 ### (Easiest way to get started) follow the guide from https://docs.mentra.glass/quickstart
 
