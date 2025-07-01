@@ -1,0 +1,24 @@
+{
+  "name": "hello-timer",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "bun run tsc && bun run dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Terry",
+  "license": "ISC",
+  "description": "A Advanced Timer App for AugmentOS",
+  "dependencies": {
+    "@mentra/sdk": "^2.0.3",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5",
+    "@types/express": "^5.0.1",
+    "@types/ws": "^8.18.0"
+  }
+}
