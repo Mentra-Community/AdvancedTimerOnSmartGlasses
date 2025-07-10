@@ -8,7 +8,7 @@ build:
   dockerfile: ./docker/Dockerfile
 
 services:
-- name: merge
+- name: timer
   type: web
   run: bun src/index.ts
   port: 80
@@ -18,4 +18,4 @@ services:
     NODE_ENV: ${NODE_ENV}
     PORTER_APP_NAME: ${PORTER_APP_NAME}
     HOST: "0.0.0.0"
-    SERVICE_NAME: "merge"
+    SERVICE_NAME: "timer"
