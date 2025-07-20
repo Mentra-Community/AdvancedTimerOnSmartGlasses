@@ -163,7 +163,13 @@ export class AdvancedTimerApp extends AppServer {
                     const rawCommandText = transcriptionData.text;
                     const isFinal = transcriptionData.isFinal ?? true;
                     if (isFinal && rawCommandText && rawCommandText.trim() !== "") {
-                        let commandToExecute = rawCommandText.trim().toLowerCase().replace(/\.$/, "");
+                        let commandToExecute = rawCommandText.trim().toLowerCase();
+                        // Remove all non-alphanumeric characters except spaces
+                        commandToExecute = commandToExecute.replace(/[^a-z0-9 ]+/g, "");
+                        // Special normalization: treat 'stop watch' as 'stopwatch'
+                        if (commandToExecute === "stop watch") {
+                            commandToExecute = "stopwatch";
+                        }
                         const useTrigger = sessionInfo.currentSettings.use_trigger_word_setting;
                         if (useTrigger && commandToExecute.startsWith(TRIGGER_PHRASE.toLowerCase())) {
                             commandToExecute = commandToExecute.substring(TRIGGER_PHRASE.length).trim();

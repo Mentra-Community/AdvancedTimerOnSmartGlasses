@@ -7,6 +7,7 @@ import { UIManager } from '../../core/uimanager';
 import { AppSettings } from '../../core/settingsmanager';
 import { MAX_TIMER_DURATION_SECONDS } from '../../core/constants';
 import { formatTime } from '../../utils/timeformatter';
+import { parseSpokenDuration } from '../../utils/parseDuration';
 
 const TOAST_DURATION = 2000; // Default duration for most toasts
 
@@ -34,27 +35,9 @@ export class TimerLogic {
         const sessionInfo = this.sessionManager.getSessionInfo(sessionId);
         if (!sessionInfo || !sessionInfo.isConnected) return false;
 
-        let durationSeconds = 0;
-        const cleanedText = commandText.toLowerCase().trim();
-        const hourMatch = cleanedText.match(/(\d+|one|an)\s*(hour|hr)/);
-        const minutesMatch = cleanedText.match(/(\d+)\s*(minute|min)/);
-        const secondsMatch = cleanedText.match(/(\d+)\s*(second|sec)/);
-        let unitsFound = false;
-
-        if (hourMatch) { /* ... parsing ... */ durationSeconds += ((hourMatch[1] === 'one' || hourMatch[1] === 'an') ? 1 : parseInt(hourMatch[1], 10)) * 3600; unitsFound = true; }
-        if (minutesMatch) { /* ... parsing ... */ durationSeconds += parseInt(minutesMatch[1], 10) * 60; unitsFound = true; }
-        if (secondsMatch) { /* ... parsing ... */ durationSeconds += parseInt(secondsMatch[1], 10); unitsFound = true; }
-
-        if (!unitsFound && cleanedText.match(/^\d+$/)) {
-             this.uiManager.showToast(session, sessionId, "Please specify units (e.g., '5 minutes' or '30 seconds').", TOAST_DURATION);
-             return false;
-        }
-        if (!unitsFound && durationSeconds === 0) {
-            this.uiManager.showToast(session, sessionId, "Could not understand duration. Try '5 minutes'.", TOAST_DURATION);
-            return false;
-        }
-
-        if (durationSeconds > 0 && durationSeconds <= MAX_TIMER_DURATION_SECONDS) {
+        // Use the new spoken duration parser
+        const durationSeconds = parseSpokenDuration(commandText);
+        if (durationSeconds !== null && durationSeconds > 0 && durationSeconds <= MAX_TIMER_DURATION_SECONDS) {
             this.sessionManager.updateSessionInfo(sessionId, { timerDuration: durationSeconds, remainingSeconds: durationSeconds });
             this.sessionManager.setState(sessionId, MyAppState.TIMER_READY);
             const updatedSessionInfo = this.sessionManager.getSessionInfo(sessionId)!;
@@ -62,15 +45,14 @@ export class TimerLogic {
             this.uiManager.showToast(session, sessionId, `Timer set for ${formatTime(durationSeconds)}. Say 'Start'.`, TOAST_DURATION);
             console.log(`[TimerLogic] Session ${sessionId}: Timer duration set to ${durationSeconds}s.`);
             return true;
-        } else if (durationSeconds > MAX_TIMER_DURATION_SECONDS) {
+        } else if (durationSeconds !== null && durationSeconds > MAX_TIMER_DURATION_SECONDS) {
             const maxMinutes = Math.floor(MAX_TIMER_DURATION_SECONDS / 60);
             this.uiManager.showToast(session, sessionId, `Invalid duration. Max ${maxMinutes} minutes. Try e.g., '5 minutes'.`, TOAST_DURATION);
             console.warn(`[TimerLogic] Session ${sessionId}: Invalid duration input (too long): ${commandText} (parsed as ${durationSeconds}s).`);
             return false;
-        } else { 
-             this.uiManager.showToast(session, sessionId, "Invalid duration. Please specify a positive time.", TOAST_DURATION);
-             console.warn(`[TimerLogic] Session ${sessionId}: Invalid duration input (zero or negative): ${commandText} (parsed as ${durationSeconds}s).`);
-             return false;
+        } else {
+            this.uiManager.showToast(session, sessionId, "Could not understand duration. Try '5 minutes'.", TOAST_DURATION);
+            return false;
         }
     }
 
