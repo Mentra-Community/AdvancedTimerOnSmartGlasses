@@ -209,7 +209,7 @@ export class AdvancedTimerApp extends AppServer {
                 console.log(`[AdvancedTimerApp] Subscribed to transcription for session ${sessionId}`);
             }
         };
-        subscribeTranscriptionIfNeeded();
+        // subscribeTranscriptionIfNeeded();
         
         const unsubscribeSettingsRefreshed = this.settingsManager.onSettingsRefreshed(sessionId, (changedTpaConfigKeys: string[]) => {
             console.log(`[AdvancedTimerApp] Settings refreshed callback for session ${sessionId}. Changed TPA Config keys:`, changedTpaConfigKeys);
@@ -299,18 +299,18 @@ export class AdvancedTimerApp extends AppServer {
                     } else if (tpaConfigKey === 'control_input_method') {
                         this.uiManager.showToast(session, sessionId, `Controls set to ${valueToCheckAgainstPrevious}.`);
                         const sessInfo = this.sessionManager.getSessionInfo(sessionId);
-                        if (sessInfo) {
-                            if (sessInfo.currentControlMethod === 'voice') {
-                                subscribeTranscriptionIfNeeded();
-                            } else {
-                                const unsub = this.transcriptionUnsubscribeMap.get(sessionId);
-                                if (unsub) {
-                                    unsub();
-                                    this.transcriptionUnsubscribeMap.delete(sessionId);
-                                    console.log(`[AdvancedTimerApp] Unsubscribed from transcription for session ${sessionId}`);
-                                }
-                            }
-                        }
+                        // if (sessInfo) {
+                        //     if (sessInfo.currentControlMethod === 'voice') {
+                        //         subscribeTranscriptionIfNeeded();
+                        //     } else {
+                        //         const unsub = this.transcriptionUnsubscribeMap.get(sessionId);
+                        //         if (unsub) {
+                        //             unsub();
+                        //             this.transcriptionUnsubscribeMap.delete(sessionId);
+                        //             console.log(`[AdvancedTimerApp] Unsubscribed from transcription for session ${sessionId}`);
+                        //         }
+                        //     }
+                        // }
                         uiRefreshNeeded = true;
                     } else if (tpaConfigKey === 'use_trigger_word_setting') {
                         this.uiManager.showToast(session, sessionId, `Trigger word ("${TRIGGER_PHRASE}") ${valueToCheckAgainstPrevious ? 'enabled' : 'disabled'}.`);
@@ -401,11 +401,11 @@ export class AdvancedTimerApp extends AppServer {
             }
         });
                 
-        session.events.onButtonPress(async (buttonData: ButtonPress) => { 
-            if (this.sessionManager.getState(sessionId) === MyAppState.APP_INITIALIZING) return;
-            const buttonId = buttonData.buttonId;
-            this.uiManager.showToast(session, sessionId, `Button "${buttonId}" pressed (not implemented).`);
-        });
+        // session.events.onButtonPress(async (buttonData: ButtonPress) => { 
+        //     if (this.sessionManager.getState(sessionId) === MyAppState.APP_INITIALIZING) return;
+        //     const buttonId = buttonData.buttonId;
+        //     this.uiManager.showToast(session, sessionId, `Button "${buttonId}" pressed (not implemented).`);
+        // });
     } // EINDE onSession METHODE
 
     private async handleActivateToggleChange(
