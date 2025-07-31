@@ -3,6 +3,7 @@ import { fallbackDefaultAppSettings } from '../core/constants';
 
 export interface MySessionInfo {
     sessionId: string;
+    userId: string;
     isConnected: boolean;
     currentControlMethod: 'voice' | 'app_internal' | 'app_external';
 
@@ -39,6 +40,7 @@ export interface MySessionInfo {
 
 export const initialMySessionInfo: MySessionInfo = {
     sessionId: '',
+    userId: '',
     isConnected: false,
     currentControlMethod: fallbackDefaultAppSettings.control_input_method,
     timerDuration: fallbackDefaultAppSettings.default_timer_duration_seconds,

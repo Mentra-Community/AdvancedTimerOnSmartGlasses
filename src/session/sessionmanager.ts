@@ -36,6 +36,7 @@ export class SessionManager {
     const newSessionInfo: MySessionInfo = {
       ...initialMySessionInfo, 
       sessionId: sessionId,
+      userId: userId || '',
       isConnected: true,
       currentControlMethod: sessionSpecificSettings.control_input_method,
       timerDuration: sessionSpecificSettings.default_timer_duration_seconds,
@@ -50,6 +51,15 @@ export class SessionManager {
 
     console.log(`[SessionManager] Session ${sessionId} initialized for user ${userId || 'unknown'}. Initial state: ${MyAppState[initialState]}.`);
     return newSessionInfo;
+  }
+
+  public getSessionIdForUserId(userId: string): string | undefined {
+    for (const [sessionId, sessionEntry] of this.activeSessions.entries()) {
+        if (sessionEntry.info.userId === userId) {
+            return sessionId;
+        }
+    }
+    return undefined;
   }
 
   public getSessionInfo(sessionId: string): MySessionInfo | undefined {

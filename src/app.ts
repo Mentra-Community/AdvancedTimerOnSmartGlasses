@@ -21,6 +21,8 @@ import { PomodoroLogic } from './features/pomodoro/pomodorologic';
 import { CommandHandler } from './core/commandhandler';
 import { TRIGGER_PHRASE, COMMAND_COOLDOWN_MS } from './core/constants';
 import { formatTime } from './utils/timeformatter';
+import { handleToolCall } from './tools';
+import { ToolCall } from '@mentra/sdk';
 
 const TOAST_DURATION = 2000; 
 const INITIALIZING_DELAY_MS = 1000; 
@@ -33,7 +35,7 @@ const POMODORO_DATA_SDK_KEYS: string[] = [ /* ... */ ];
 const SDK_KEY_TO_APP_SETTINGS_KEY_MAP: Partial<Record<string, keyof AppSettings>> = { /* ... */ };
 
 export class AdvancedTimerApp extends AppServer {
-    private sessionManager: SessionManager;
+    public sessionManager: SessionManager;
     private settingsManager: SettingsManager;
     private uiManager: UIManager;
     private timerUi: TimerUi;
@@ -42,7 +44,8 @@ export class AdvancedTimerApp extends AppServer {
     private stopwatchLogic: StopwatchLogic;
     private pomodoroUi: PomodoroUi;
     private pomodoroLogic: PomodoroLogic;
-    private commandHandler: CommandHandler;
+    public commandHandler: CommandHandler;
+    public activeAppSessions: Map<string, AppSession> = new Map();
 
     public readonly ownPackageName: string;
     public readonly ownPort: number;
@@ -76,6 +79,19 @@ export class AdvancedTimerApp extends AppServer {
             this.stopwatchLogic, this.timerLogic, this.pomodoroLogic, this.settingsManager
         );
         console.log('[AdvancedTimerApp] All components initialized.');
+    }
+
+    protected async onToolCall(toolCall: ToolCall): Promise<string | undefined> {
+        const sessionId = this.sessionManager.getSessionIdForUserId(toolCall.userId);
+        if (!sessionId) {
+            return "Could not find an active session for this user.";
+        }
+        const session = this.activeAppSessions.get(sessionId);
+        if (!session) {
+            return "Could not find the session object for this command.";
+        }
+
+        return handleToolCall(toolCall, this, session, this.commandHandler, sessionId);
     }
 
     private _getEffectiveSettingsForSession(sessionId: string): AppSettings {
@@ -125,6 +141,7 @@ export class AdvancedTimerApp extends AppServer {
 
     protected async onSession(session: AppSession, sessionId: string, userId: string): Promise<void> {
         console.log(`[AdvancedTimerApp] onSession called for session: ${sessionId}, user: ${userId}`);
+        this.activeAppSessions.set(sessionId, session);
 
         this.sessionManager.initializeSession(sessionId, MyAppState.APP_INITIALIZING, userId); 
         
@@ -164,9 +181,7 @@ export class AdvancedTimerApp extends AppServer {
                     const isFinal = transcriptionData.isFinal ?? true;
                     if (isFinal && rawCommandText && rawCommandText.trim() !== "") {
                         let commandToExecute = rawCommandText.trim().toLowerCase();
-                        // Remove all non-alphanumeric characters except spaces
                         commandToExecute = commandToExecute.replace(/[^a-z0-9 ]+/g, "");
-                        // Special normalization: treat 'stop watch' as 'stopwatch'
                         if (commandToExecute === "stop watch") {
                             commandToExecute = "stopwatch";
                         }
@@ -355,6 +370,7 @@ export class AdvancedTimerApp extends AppServer {
                 this.sessionManager.updateSessionInfo(sessionId, { isConnected: false });
                 this.clearAllTimersForSession(sessionId);
             }
+            this.activeAppSessions.delete(sessionId);
         });
         session.events.onDisconnected((disconnectData: string | { message: string; code: number; reason: string; wasClean: boolean; permanent?: boolean }) => {
             const reason = typeof disconnectData === 'string' ? disconnectData : disconnectData.reason;
@@ -376,6 +392,7 @@ export class AdvancedTimerApp extends AppServer {
                 this.sessionManager.removeSession(sessionId);
                 this.settingsManager.removeSessionSettings(sessionId);
             }
+            this.activeAppSessions.delete(sessionId);
             const unsub = this.transcriptionUnsubscribeMap.get(sessionId);
             if (unsub) {
                 unsub();
