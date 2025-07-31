@@ -1,0 +1,463 @@
+{
+  "name": "Timer",
+  "description": "A smart glasses timer application that displays a countdown timer.",
+  "onboardingInstructions": "",
+  "publicUrl": "https://testtimer.ngrok.app",
+  "logoURL": "https://imagedelivery.net/nrc8B2Lk8UIoyW7fY8uHVg/9d03185e-007d-4ac0-6775-ee0c00a81800/square",
+  "appType": "standard",
+  "permissions": [
+    {
+      "type": "MICROPHONE",
+      "description": "Permission needed to activate Voice Commands to control the Timer Functions by Speech"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "key": "",
+      "label": "",
+      "title": "General Settings"
+    },
+    {
+      "type": "select",
+      "key": "startup_mode",
+      "label": "Initial Mode on Startup",
+      "defaultValue": "menu",
+      "options": [
+        {
+          "label": "Show Menu First",
+          "value": "menu"
+        },
+        {
+          "label": "Stopwatch",
+          "value": "stopwatch"
+        },
+        {
+          "label": "Timer",
+          "value": "timer"
+        },
+        {
+          "label": "Pomodoro",
+          "value": "pomodoro"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "key": "control_input_method",
+      "label": "Control Input Method",
+      "defaultValue": "voice",
+      "options": [
+        {
+          "label": "Voice Control (and App Control)",
+          "value": "voice"
+        },
+        {
+          "label": "App Control (Mic off)",
+          "value": "app_external"
+        }
+      ]
+    },
+    {
+      "type": "toggle",
+      "key": "use_trigger_word_setting",
+      "label": "Activate Trigger Word ('Mira')",
+      "defaultValue": false
+    },
+    {
+      "type": "select",
+      "key": "show_hints_level",
+      "label": "Detail Level for On-Screen Information",
+      "options": [
+        {
+          "label": "Show Everything (State, Context, Hints)",
+          "value": "show_all"
+        },
+        {
+          "label": "Hide Hints Only",
+          "value": "hide_hints_only"
+        },
+        {
+          "label": "Hide Hints & Context",
+          "value": "hide_hints_context"
+        },
+        {
+          "label": "Hide All Details (State, Context, Hints)",
+          "value": "hide_all_details"
+        }
+      ],
+      "defaultValue": "show_all",
+      "description": "Choose how much information (status, context, voice command hints) is displayed on screen."
+    },
+    {
+      "type": "group",
+      "key": "",
+      "label": "",
+      "title": "Timer Defaults"
+    },
+    {
+      "key": "default_timer_duration_mmss",
+      "label": "Default Timer Duration (MM:SS)",
+      "type": "text",
+      "defaultValue": "00:00",
+      "description": "Set the default timer duration. Format: MM:SS (e.g., 01:30 for 1 minute and 30 seconds)."
+    },
+    {
+      "type": "toggle",
+      "key": "activate_timer_from_settings",
+      "label": "Start/Stop Timer via Setting",
+      "defaultValue": false
+    },
+    {
+      "type": "group",
+      "key": "",
+      "label": "",
+      "title": "Stopwatch Settings"
+    },
+    {
+      "type": "toggle",
+      "key": "stopwatch_auto_lap_enabled",
+      "label": "Enable Auto-Lap",
+      "defaultValue": false
+    },
+    {
+      "type": "text",
+      "key": "stopwatch_max_auto_lap_intervals",
+      "label": "Max Auto-Laps (1-99)",
+      "defaultValue": "5",
+      "description": "Type the maximum number of auto-laps (1-99)."
+    },
+    {
+      "type": "toggle",
+      "key": "activate_stopwatch_from_settings",
+      "label": "Start/Stop Stopwatch via Setting",
+      "defaultValue": false
+    },
+    {
+      "type": "group",
+      "key": "",
+      "label": "",
+      "title": "Pomodoro Settings"
+    },
+    {
+      "type": "select",
+      "key": "pomodoro_work_duration_minutes",
+      "label": "Pomodoro: Work Duration",
+      "defaultValue": "25",
+      "options": [
+        {
+          "label": "15 Minutes",
+          "value": "15"
+        },
+        {
+          "label": "20 Minutes",
+          "value": "20"
+        },
+        {
+          "label": "25 Minutes (Classic)",
+          "value": "25"
+        },
+        {
+          "label": "30 Minutes",
+          "value": "30"
+        },
+        {
+          "label": "45 Minutes",
+          "value": "45"
+        },
+        {
+          "label": "50 Minutes",
+          "value": "50"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "key": "pomodoro_short_break_duration_minutes",
+      "label": "Pomodoro: Short Break Duration",
+      "defaultValue": "5",
+      "options": [
+        {
+          "label": "3 Minutes",
+          "value": "3"
+        },
+        {
+          "label": "5 Minutes (Classic)",
+          "value": "5"
+        },
+        {
+          "label": "7 Minutes",
+          "value": "7"
+        },
+        {
+          "label": "10 Minutes",
+          "value": "10"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "key": "pomodoro_long_break_duration_minutes",
+      "label": "Pomodoro: Long Break Duration",
+      "defaultValue": "15",
+      "options": [
+        {
+          "label": "10 Minutes",
+          "value": "10"
+        },
+        {
+          "label": "15 Minutes (Classic)",
+          "value": "15"
+        },
+        {
+          "label": "20 Minutes",
+          "value": "20"
+        },
+        {
+          "label": "25 Minutes",
+          "value": "25"
+        },
+        {
+          "label": "30 Minutes",
+          "value": "30"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "key": "pomodoro_intervals_before_long_break",
+      "label": "Pomodoro: Work Intervals before Long Break",
+      "defaultValue": "4",
+      "options": [
+        {
+          "label": "2 Intervals",
+          "value": "2"
+        },
+        {
+          "label": "3 Intervals",
+          "value": "3"
+        },
+        {
+          "label": "4 Intervals (Classic)",
+          "value": "4"
+        },
+        {
+          "label": "5 Intervals",
+          "value": "5"
+        },
+        {
+          "label": "6 Intervals",
+          "value": "6"
+        }
+      ]
+    },
+    {
+      "type": "toggle",
+      "key": "pomodoro_auto_start_breaks",
+      "label": "Pomodoro: Auto-start Breaks",
+      "defaultValue": true
+    },
+    {
+      "type": "toggle",
+      "key": "pomodoro_auto_start_work",
+      "label": "Pomodoro: Auto-start Work Sessions",
+      "defaultValue": true
+    },
+    {
+      "type": "toggle",
+      "key": "activate_pomodoro_from_settings",
+      "label": "Start/Stop Pomodoro Cycle via Setting",
+      "defaultValue": false
+    }
+  ],
+  "tools": [
+    {
+      "id": "get_status",
+      "description": "This tool gets the current status of the timer application. Use it when the user wants to know what mode is currently active or the current state of the timer, stopwatch, or pomodoro.",
+      "activationPhrases": [
+        "what's the status",
+        "what's happening",
+        "what mode am I in",
+        "what's the current state",
+        "what's going on",
+        "show me the status"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "start_timer",
+      "description": "This tool starts a timer with the specified duration. Use it when the user wants to start a countdown timer.",
+      "activationPhrases": [
+        "start timer",
+        "set timer for",
+        "start a timer",
+        "begin timer",
+        "set timer",
+        "start countdown"
+      ],
+      "parameters": {
+        "duration": {
+          "type": "string",
+          "description": "The duration for the timer (e.g., '5 minutes', '1h 30m', '30 seconds').",
+          "required": true
+        }
+      }
+    },
+    {
+      "id": "pause_timer",
+      "description": "This tool pauses the currently running timer. Use it when the user wants to pause the timer without stopping it completely.",
+      "activationPhrases": [
+        "pause timer",
+        "pause the timer",
+        "pause countdown",
+        "pause the countdown",
+        "stop timer temporarily"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "resume_timer",
+      "description": "This tool resumes a paused timer. Use it when the user wants to continue a timer that was previously paused.",
+      "activationPhrases": [
+        "resume timer",
+        "resume the timer",
+        "continue timer",
+        "unpause timer",
+        "restart timer"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "stop_timer",
+      "description": "This tool stops the timer completely. Use it when the user wants to end the timer and return to the menu.",
+      "activationPhrases": [
+        "stop timer",
+        "stop the timer",
+        "end timer",
+        "cancel timer",
+        "quit timer"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "start_stopwatch",
+      "description": "This tool starts the stopwatch. Use it when the user wants to begin timing something.",
+      "activationPhrases": [
+        "start stopwatch",
+        "begin stopwatch",
+        "start timing",
+        "begin timing",
+        "start the stopwatch"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "pause_stopwatch",
+      "description": "This tool pauses the currently running stopwatch. Use it when the user wants to pause timing without stopping it completely.",
+      "activationPhrases": [
+        "pause stopwatch",
+        "pause the stopwatch",
+        "pause timing",
+        "pause the timing"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "resume_stopwatch",
+      "description": "This tool resumes a paused stopwatch. Use it when the user wants to continue timing that was previously paused.",
+      "activationPhrases": [
+        "resume stopwatch",
+        "resume the stopwatch",
+        "continue stopwatch",
+        "unpause stopwatch",
+        "continue timing"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "stop_stopwatch",
+      "description": "This tool stops the stopwatch completely. Use it when the user wants to end timing and return to the menu.",
+      "activationPhrases": [
+        "stop stopwatch",
+        "stop the stopwatch",
+        "end stopwatch",
+        "stop timing",
+        "end timing"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "lap_stopwatch",
+      "description": "This tool records a lap time on the stopwatch. Use it when the user wants to mark a lap time while the stopwatch is running.",
+      "activationPhrases": [
+        "lap",
+        "record lap",
+        "mark lap",
+        "set lap",
+        "lap time"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "start_pomodoro",
+      "description": "This tool starts a pomodoro cycle with work and break sessions. Use it when the user wants to begin a focused work session with breaks.",
+      "activationPhrases": [
+        "start pomodoro",
+        "begin pomodoro",
+        "start focus session",
+        "begin focus session",
+        "start work session",
+        "begin work session"
+      ],
+      "parameters": {
+        "work_duration": {
+          "type": "string",
+          "description": "The duration for work sessions (e.g., '25m', '30m'). Default is 25 minutes.",
+          "required": false
+        },
+        "break_duration": {
+          "type": "string",
+          "description": "The duration for break sessions (e.g., '5m', '10m'). Default is 5 minutes.",
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "pause_pomodoro",
+      "description": "This tool pauses the currently running pomodoro session. Use it when the user wants to pause the work or break session.",
+      "activationPhrases": [
+        "pause pomodoro",
+        "pause the pomodoro",
+        "pause focus session",
+        "pause work session",
+        "pause break"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "resume_pomodoro",
+      "description": "This tool resumes a paused pomodoro session. Use it when the user wants to continue a work or break session that was previously paused.",
+      "activationPhrases": [
+        "resume pomodoro",
+        "resume the pomodoro",
+        "continue pomodoro",
+        "unpause pomodoro",
+        "resume focus session"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "stop_pomodoro",
+      "description": "This tool stops the pomodoro cycle completely. Use it when the user wants to end the pomodoro session and return to the menu.",
+      "activationPhrases": [
+        "stop pomodoro",
+        "stop the pomodoro",
+        "end pomodoro",
+        "stop focus session",
+        "end focus session",
+        "stop work session"
+      ],
+      "parameters": {}
+    }
+  ]
+}
