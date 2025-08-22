@@ -4,7 +4,7 @@
   "onboardingInstructions": "",
   "publicUrl": "https://testtimer.ngrok.app",
   "logoURL": "https://imagedelivery.net/nrc8B2Lk8UIoyW7fY8uHVg/9d03185e-007d-4ac0-6775-ee0c00a81800/square",
-  "appType": "standard",
+  "appType": "background",
   "permissions": [
     {
       "type": "MICROPHONE",
@@ -68,6 +68,7 @@
       "type": "select",
       "key": "show_hints_level",
       "label": "Detail Level for On-Screen Information",
+      "defaultValue": "show_all",
       "options": [
         {
           "label": "Show Everything (State, Context, Hints)",
@@ -85,9 +86,7 @@
           "label": "Hide All Details (State, Context, Hints)",
           "value": "hide_all_details"
         }
-      ],
-      "defaultValue": "show_all",
-      "description": "Choose how much information (status, context, voice command hints) is displayed on screen."
+      ]
     },
     {
       "type": "group",
@@ -96,11 +95,10 @@
       "title": "Timer Defaults"
     },
     {
+      "type": "text",
       "key": "default_timer_duration_mmss",
       "label": "Default Timer Duration (MM:SS)",
-      "type": "text",
-      "defaultValue": "00:00",
-      "description": "Set the default timer duration. Format: MM:SS (e.g., 01:30 for 1 minute and 30 seconds)."
+      "defaultValue": "00:00"
     },
     {
       "type": "toggle",
@@ -124,8 +122,7 @@
       "type": "text",
       "key": "stopwatch_max_auto_lap_intervals",
       "label": "Max Auto-Laps (1-99)",
-      "defaultValue": "5",
-      "description": "Type the maximum number of auto-laps (1-99)."
+      "defaultValue": "5"
     },
     {
       "type": "toggle",
@@ -281,8 +278,7 @@
         "what's the current state",
         "what's going on",
         "show me the status"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "start_timer",
@@ -312,8 +308,7 @@
         "pause countdown",
         "pause the countdown",
         "stop timer temporarily"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "resume_timer",
@@ -324,8 +319,7 @@
         "continue timer",
         "unpause timer",
         "restart timer"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "stop_timer",
@@ -336,8 +330,7 @@
         "end timer",
         "cancel timer",
         "quit timer"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "start_stopwatch",
@@ -348,8 +341,7 @@
         "start timing",
         "begin timing",
         "start the stopwatch"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "pause_stopwatch",
@@ -359,8 +351,7 @@
         "pause the stopwatch",
         "pause timing",
         "pause the timing"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "resume_stopwatch",
@@ -371,8 +362,7 @@
         "continue stopwatch",
         "unpause stopwatch",
         "continue timing"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "stop_stopwatch",
@@ -383,8 +373,7 @@
         "end stopwatch",
         "stop timing",
         "end timing"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "lap_stopwatch",
@@ -395,8 +384,7 @@
         "mark lap",
         "set lap",
         "lap time"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "start_pomodoro",
@@ -431,8 +419,7 @@
         "pause focus session",
         "pause work session",
         "pause break"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "resume_pomodoro",
@@ -443,8 +430,7 @@
         "continue pomodoro",
         "unpause pomodoro",
         "resume focus session"
-      ],
-      "parameters": {}
+      ]
     },
     {
       "id": "stop_pomodoro",
@@ -456,8 +442,7 @@
         "stop focus session",
         "end focus session",
         "stop work session"
-      ],
-      "parameters": {}
+      ]
     }
   ]
 }
